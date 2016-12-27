@@ -9,4 +9,6 @@ RSpec.describe Team, type: :model do
   it {should validate_presence_of(:city)}
   it {should validate_uniqueness_of(:nickname).case_insensitive}
   it {should validate_length_of(:nickname).is_at_least(4)}
+  it {should have_many(:participants)}
+  it {should validate_presence_of(:division)}
 end
