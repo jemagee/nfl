@@ -17,23 +17,50 @@ RSpec.describe Participant, type: :model do
     it {should validate_presence_of(:q2)}
     it {should validate_presence_of(:q3)}
     it {should validate_presence_of(:q4)}
-    it {should validate_presence_of(:ot)}
+    it {should validate_presence_of(:q5)}
     it {should validate_inclusion_of(:homeaway).in_array(["H", "A"])}
     it {should validate_inclusion_of(:winlosstie).in_array(["W", "L", "T"])}
     it {should validate_numericality_of(:q1).only_integer}
     it {should validate_numericality_of(:q2).only_integer}
     it {should validate_numericality_of(:q3).only_integer}
     it {should validate_numericality_of(:q4).only_integer}
-    it {should validate_numericality_of(:ot).only_integer}
+    it {should validate_numericality_of(:q5).only_integer}
   end
 
   describe "Verifying scope of team within game" do
 
+    Rails.application.load_seed
+
     it "should not allow the same team to be entered as a participant for the same game" do
-      Participant.create(team: Team.first, game: game, homeaway: "H", winlosstie: "W", q1: 7, q2: 10, q3: 14, q4: 10, ot: 0)
-      test = Participant.create(team: Team.first, game: game, homeaway: "H", winlosstie: "W", q1: 7, q2: 10, q3: 14, q4: 10, ot: 0)
+      Participant.create(team: Team.first, game: game, homeaway: "H", winlosstie: "W", q1: 7, q2: 10, q3: 14, q4: 10, q5: 0)
+      test = Participant.create(team: Team.first, game: game, homeaway: "H", winlosstie: "W", q1: 7, q2: 10, q3: 14, q4: 10, q5: 0)
       expect(test.errors.full_messages).to include("Team has already been taken")
       expect(test.valid?).to eq false
+    end
+  end
+
+  context "The JSON captured by the gameID will populate participants correctly" do
+
+    before do
+      Game.add_games('spec/fixtures/nokogiritest.html')
+      Participant.add_participants(JSON.parse(File.read('spec/fixtures/participanttest.json')))
+    end
+
+    it "should create two records" do
+      expect(Participant.count).to eq 2
+    end
+
+    it "should have one winner and one loser" do
+      expect(Participant.where(winlosstie: "W").count).to eq 1
+      expect(Participant.where(winlosstie: "L").count).to eq 1
+    end
+
+    it "should have a home team equal to the Broncos" do
+      expect(Participant.find_by(homeaway: "H").team.nickname).to eq "Broncos"
+    end
+
+    it "should have an away team equal to the Panthers" do
+      expect(Participant.find_by(homeaway: "A").team.nickname).to eq "Panthers"
     end
   end
 end
