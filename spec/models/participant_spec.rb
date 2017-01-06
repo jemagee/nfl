@@ -62,5 +62,14 @@ RSpec.describe Participant, type: :model do
     it "should have an away team equal to the Panthers" do
       expect(Participant.find_by(homeaway: "A").team.nickname).to eq "Panthers"
     end
+
+
+    it "should have a winner with 21 Points" do
+      expect(Game.find_by(nflcomid: 2016090800).participants.winner.points).to equal(21)
+    end
+
+    it "should have a loser with 20 points" do
+      expect(Game.find_by(nflcomid: 2016090800).participants.loser.points).to equal(20)
+    end
   end
 end

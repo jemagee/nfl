@@ -8,6 +8,21 @@ class Participant < ApplicationRecord
   validates :homeaway, presence: true, inclusion: {in: %w(H A)}
   validates :q1, :q2, :q3, :q4, :q5, presence: true, numericality: {only_integer: true}
 
+  scope :winner, -> {where(winlosstie: 'W')}
+  scope :loser, -> {where(winlosstie: 'L')}
+
+  def self.points
+    total = 0
+    count = 1
+    while count <= 5
+      total += pluck("q#{count}".to_s)[0]
+      count += 1
+    end
+    return total.to_i
+  end
+
+
+
   def self.add_participants(gameinfo) 
   	rawgame = gameinfo.keys.first
   	gameid = Game.find_by(nflcomid: rawgame.to_i)
@@ -48,4 +63,5 @@ class Participant < ApplicationRecord
   	hometeam.save
   	awayteam.save
   end
+
 end
