@@ -71,5 +71,9 @@ RSpec.describe Participant, type: :model do
     it "should have a loser with 20 points" do
       expect(Game.find_by(nflcomid: 2016090800).participants.loser.points).to equal(20)
     end
+
+    it "should have a total of 41 points scored" do
+      expect(Game.find_by(nflcomid: 2016090800).participants.points).to equal(41)
+    end
   end
 end
