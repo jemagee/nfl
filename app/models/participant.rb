@@ -12,13 +12,14 @@ class Participant < ApplicationRecord
   scope :loser, -> {where(winlosstie: 'L')}
 
   def self.points
-    total = 0
-    count = 1
-    while count <= 5
-      total += pluck("q#{count}".to_s)[0]
-      count += 1
-    end
-    return total.to_i
+    # total = 0
+    # count = 1
+    # while count <= 5
+    #   total += pluck("q#{count}".to_s)[0]
+    #   count += 1
+    # end
+    # return total.to_i
+    pluck(:q1, :q2, :q3, :q4, :q5)[0].inject{|sum, n| sum + n}
   end
 
 
