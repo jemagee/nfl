@@ -9,8 +9,24 @@ RSpec.describe Game, type: :model do
   it {should validate_numericality_of(:nflcomid).only_integer}
   it {should have_many(:participants)}
 
-  scenario "Nokogiri will successfully populate the game and date information" do
+  context "Nokogiri will successfully populate the game and date information" do
 
-  	expect{Game.add_games('spec/fixtures/nokogiritest.html')}.to change{Game.count}.by(16)
+  	before {Game.add_games('spec/fixtures/nokogiritest.html')}
+
+  	it "inserts 16 new records" do
+  		expect(Game.count).to equal(16)
+  	end
+
+  	it "inserts one game with the game date 9/8/2016" do
+  		expect(Game.where(gamedate: "2016-09-08").count).to equal(1)
+  	end
+
+  	it "inserts two games with the game date 9/12/2016" do
+  		expect(Game.where(gamedate: "2016-09-12").count).to equal(2)
+  	end
+
+  	it "inserts thirteen games with the game date 9/11/2016" do
+  		expect(Game.where(gamedate: "2016-09-11").count).to equal(13)
+  	end
   end
 end
