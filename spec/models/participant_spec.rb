@@ -64,16 +64,28 @@ RSpec.describe Participant, type: :model do
     end
 
 
-    it "should have a winner with 21 Points" do
+    it "should have a winner with 21 Points, when looking through the game." do
       expect(Game.find_by(nflcomid: 2016090800).participants.winner.points).to equal(21)
     end
 
-    it "should have a loser with 20 points" do
+    it "should have a loser with 20 points, when looking through the game instance" do
       expect(Game.find_by(nflcomid: 2016090800).participants.loser.points).to equal(20)
     end
 
-    it "should have a total of 41 points scored" do
+    it "should have a total of 41 points score, when looking through the game instance" do
       expect(Game.find_by(nflcomid: 2016090800).participants.points).to equal(41)
+    end
+
+    it "should total 41 points if I just ask for the total points directly on the participant model" do
+      expect(Participant.points).to equal(41)
+    end
+
+    it "should total 21 points if I just ask for the total points of the winners on the  participants model" do
+      expect(Participant.winner.points).to equal(21)
+    end
+
+    it "should total 20 points if I just ask for the total points of the losers on the participant model" do
+      expect(Participant.loser.points).to equal(20)
     end
   end
 end
