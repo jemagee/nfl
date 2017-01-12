@@ -23,14 +23,14 @@ RSpec.describe Player, type: :model do
 
   it "should change the player count by 1" do
 
-  	expect{Player.add_player('spec/fixtures/player_information_test.html')}.to change{Player.count}.by(1)
+  	expect{Player.add_player("00-0032156",'spec/fixtures/player_draft.html')}.to change{Player.count}.by(1)
   end
 
-  context "Adding Player Information should work properly" do
+  # context "Adding Player Information should work properly" do
 
-  	before { Player.add_player('spec/fixtures/player_information_test.html')}
+  # 	before { Player.add_player('00-0032156','spec/fixtures/player_draft.html')}
 
 
-  end
+  # end
   		
 end
