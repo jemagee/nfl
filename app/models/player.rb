@@ -10,7 +10,6 @@ class Player < ApplicationRecord
 	validates :round_pick, uniqueness: {scope: [:draft_year, :draft_round]}
 
 	def self.add_player(oldnumber, data)
-		puts data
 		source_data = Nokogiri::HTML(open(data))
 		new_player = Player.new
 		new_player.name = source_data.at('meta[id="playerName"]')["content"]
@@ -25,11 +24,14 @@ class Player < ApplicationRecord
 			traits[trait.content.downcase] = trait.next.content
 		end
 
-		new_player.college = traits["college"]
+		new_player.college = traits["college"][2..-1]
 		new_player.height = get_height(traits["height"].scan(/\d-\d/))
 		new_player.birth_date =  Date.strptime(traits["born"].scan(/\d*\/\d*\/\d*/)[0], '%m/%d/%Y')
 		new_player.draft_year = source_data.css('.draft-header').text.split(" ").last.to_i
 		new_player.draft_round = source_data.css('span.round').text.to_i
+		teamname = source_data.css('span.team').text.split(" ").last
+		new_player.draft_team = Team.find_by('nickname like ?', "%#{teamname}").id
+
 		picks = source_data.css('div#pick-overview p').last.text.scan(/(\d+)/)
 		new_player.round_pick = picks[0][0].to_i
 		new_player.overall_pick = picks[1][0].to_i

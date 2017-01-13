@@ -23,14 +23,59 @@ RSpec.describe Player, type: :model do
 
   it "should change the player count by 1" do
 
-  	expect{Player.add_player("00-0032156",'spec/fixtures/player_draft.html')}.to change{Player.count}.by(1)
+  	expect{Player.add_player('00-0032156','spec/fixtures/player_draft.html')}.to change{Player.count}.by(1)
+    expect(Player.all.count).to equal 1
   end
 
-  # context "Adding Player Information should work properly" do
+  context "The method for adding players should parse the information properly to store the proper information" do
 
-  # 	before { Player.add_player('00-0032156','spec/fixtures/player_draft.html')}
+  	before { Player.add_player('00-0032156','spec/fixtures/player_draft.html')}
 
+    it "should have player name of Trevor Siemian" do
+      expect(Player.first.name).to eq "Trevor Siemian"
+    end
 
-  # end
+    it "should have the right nflcomid" do
+      expect(Player.first.nflcomid).to eq 2553457
+    end
+
+    it "should have the right old id" do
+      expect(Player.first.oldid).to eq "00-0032156"
+    end
+
+    it "shouuld have the right height value" do
+      expect(Player.first.height).to eq 75
+    end
+
+    it "should have player round of 7" do
+      expect(Player.first.draft_round).to eq 7
+    end
+
+    it "should have a player draft year of 2015" do
+      expect(Player.first.draft_year).to eq 2015
+    end
+
+    it "should have the right birth date" do
+      expect(Player.first.birth_date.year).to eq 1991
+      expect(Player.first.birth_date.month).to eq 12
+      expect(Player.first.birth_date.day).to eq 26
+    end
+
+    it "should have the right college" do
+      expect(Player.first.college).to eq "Northwestern"
+    end
+
+    it "should have the right draft round pick" do
+      expect(Player.first.round_pick).to eq 33
+    end
+
+    it "should have the right overall pick" do
+      expect(Player.first.overall_pick).to eq 250
+    end
+
+    it "should have the right draft_team" do
+      expect(Player.first.draft_team). to eq (Team.find_by(abbr: "DEN").id)
+    end
+  end
   		
 end
