@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170113030509) do
+ActiveRecord::Schema.define(version: 20170115210925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,12 +52,12 @@ ActiveRecord::Schema.define(version: 20170113030509) do
     t.integer  "height"
     t.date     "birth_date"
     t.string   "college"
-    t.integer  "draft_year"
-    t.integer  "draft_round"
-    t.integer  "round_pick"
-    t.integer  "overall_pick"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "draft_year",   default: 0
+    t.integer  "draft_round",  default: 0
+    t.integer  "round_pick",   default: 0
+    t.integer  "overall_pick", default: 0
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.integer  "draft_team"
   end
 
