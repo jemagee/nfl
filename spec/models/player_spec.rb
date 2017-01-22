@@ -16,6 +16,7 @@ RSpec.describe Player, type: :model do
   it {should validate_numericality_of(:round_pick).only_integer}
   it {should validate_uniqueness_of(:round_pick).scoped_to([:draft_year, :draft_round])}
   it {should validate_numericality_of(:overall_pick).only_integer}
+  it {should validate_uniqueness_of(:overall_pick).scoped_to([:draft_year])}
 
   it "should change the player count by 1" do
   	expect{Player.add_player('spec/fixtures/player_information_test.html')}.to change{Player.count}.by(1)
@@ -25,8 +26,10 @@ RSpec.describe Player, type: :model do
   context "The method for adding players should parse the information properly to store the proper information" do
 
   	before do
-     Player.add_player('spec/fixtures/player_information_test.html')
-   end
+      player = instance_double("Player")
+      allow(player).to receive(:get_raw_draft).and_return(true)
+      Player.add_player('spec/fixtures/player_information_test.html')
+    end
 
     it "should have player name of Trevor Siemian" do
       expect(Player.first.name).to eq "Trevor Siemian"

@@ -8,6 +8,7 @@ class Player < ApplicationRecord
 	validates :college, presence: true
 	validates :draft_year, :draft_round, :round_pick, :overall_pick, numericality: {only_integer: true}
 	validates :round_pick, uniqueness: {scope: [:draft_year, :draft_round]}
+	validates :overall_pick, uniqueness: {scope: :draft_year}
 
 	def self.add_player(data)
 		source_data = Nokogiri::HTML(open(data))
@@ -29,9 +30,9 @@ class Player < ApplicationRecord
 		new_player.birth_date =  Date.strptime(traits["born"].scan(/\d*\/\d*\/\d*/)[0], '%m/%d/%Y')
 		new_player.save
 		if source_data.css("div#player-profile-tabs a").to_s.downcase.include?("draft")
-
 			draft_link = source_data.at('link[rel="canonical"]')["href"].sub!("profile", "draft")
-			new_player.draft_information(new_player.get_raw_draft(draft_link))
+			raw_draft = new_player.get_raw_draft(draft_link)
+			new_player.draft_information(raw_draft)
 		end
 	end
 
