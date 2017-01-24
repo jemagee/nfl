@@ -1,5 +1,7 @@
 class Player < ApplicationRecord
 
+	has_many :passing_statistics
+
 	validates :name, presence: true
 	validates :oldid, presence: true, uniqueness:true
 	validates :nflcomid, presence: true, numericality: {only_integer: true}, uniqueness: true

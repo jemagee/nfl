@@ -9,6 +9,7 @@ RSpec.describe Participant, type: :model do
 
     it {should belong_to(:team)}
     it {should belong_to(:game)}
+    it {should have_many(:passing_statistics)}
     it {should validate_presence_of(:game)}
     it {should validate_presence_of(:team)}
     it {should validate_presence_of(:winlosstie)}

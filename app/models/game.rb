@@ -3,6 +3,7 @@ class Game < ApplicationRecord
 	require 'Nokogiri'
 
 	has_many :participants
+	has_many :passing_statistics, through: :participants
 
 	validates :gamedate, presence: true
 	validates :nflcomid, presence: true, uniqueness: {case_sensitive: false}, numericality: {only_integer: true}

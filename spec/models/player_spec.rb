@@ -17,6 +17,7 @@ RSpec.describe Player, type: :model do
   it {should validate_uniqueness_of(:round_pick).scoped_to([:draft_year, :draft_round])}
   it {should validate_numericality_of(:overall_pick).only_integer}
   it {should validate_uniqueness_of(:overall_pick).scoped_to([:draft_year])}
+  it {should have_many(:passing_statistics)}
 
   it "should change the player count by 1" do
   	expect{Player.add_player('spec/fixtures/player_information_test.html')}.to change{Player.count}.by(1)

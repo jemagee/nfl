@@ -1,6 +1,7 @@
 class Participant < ApplicationRecord
   belongs_to :game
   belongs_to :team
+  has_many :passing_statistics
 
   validates :game, presence: true
   validates :team, presence: true, uniqueness: {scope: :game}

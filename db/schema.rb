@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170115210925) do
+ActiveRecord::Schema.define(version: 20170124032523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,22 @@ ActiveRecord::Schema.define(version: 20170115210925) do
     t.index ["team_id"], name: "index_participants_on_team_id", using: :btree
   end
 
+  create_table "passing_statistics", force: :cascade do |t|
+    t.integer  "player_id"
+    t.integer  "participant_id"
+    t.integer  "att"
+    t.integer  "cmp"
+    t.integer  "yds"
+    t.integer  "tds"
+    t.integer  "ints"
+    t.integer  "twopta"
+    t.integer  "twoptm"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["participant_id"], name: "index_passing_statistics_on_participant_id", using: :btree
+    t.index ["player_id"], name: "index_passing_statistics_on_player_id", using: :btree
+  end
+
   create_table "players", force: :cascade do |t|
     t.string   "name"
     t.string   "oldid"
@@ -73,6 +89,8 @@ ActiveRecord::Schema.define(version: 20170115210925) do
 
   add_foreign_key "participants", "games"
   add_foreign_key "participants", "teams"
+  add_foreign_key "passing_statistics", "participants"
+  add_foreign_key "passing_statistics", "players"
   add_foreign_key "players", "teams", column: "draft_team"
   add_foreign_key "teams", "divisions"
 end

@@ -8,6 +8,7 @@ RSpec.describe Game, type: :model do
   it {should validate_uniqueness_of(:nflcomid).case_insensitive}
   it {should validate_numericality_of(:nflcomid).only_integer}
   it {should have_many(:participants)}
+  it {should have_many(:passing_statistics).through(:participants)}
 
   context "Nokogiri will successfully populate the game and date information" do
 
