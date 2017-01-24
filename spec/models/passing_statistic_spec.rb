@@ -17,4 +17,13 @@ RSpec.describe PassingStatistic, type: :model do
   it{should validate_numericality_of(:ints).only_integer}
   it{should validate_numericality_of(:twoptm).only_integer}
   it{should validate_numericality_of(:twopta).only_integer}
+
+  context "Processing the passing statistic from the source json" do
+
+  	before { PassingStatistic.get_stats(File.read("spec/fixtures/participanttest.json"))}
+
+  	it "should change the passing statistics by two" do
+  		expect(PassingStatistic.count).to equal 2
+  	end
+  end
 end

@@ -43,10 +43,16 @@ RSpec.describe Participant, type: :model do
   context "The JSON captured by the gameID will populate participants correctly" do
 
     before do
-      Game.add_games('spec/fixtures/nokogiritest.html')
+      VCR.use_cassette "Get Games" do
+        Game.get_games(2016, 1)
+      end
       Participant.add_participants(JSON.parse(File.read('spec/fixtures/participanttest.json')))
     end
 
+    after do
+      VCR.eject_cassette
+    end
+    
     it "should create two records" do
       expect(Participant.count).to eq 2
     end

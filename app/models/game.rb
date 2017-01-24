@@ -8,8 +8,8 @@ class Game < ApplicationRecord
 	validates :gamedate, presence: true
 	validates :nflcomid, presence: true, uniqueness: {case_sensitive: false}, numericality: {only_integer: true}
 
-	def self.add_games(rawdata)
-		source = Nokogiri::HTML(open(rawdata))
+	def self.get_games(year, week)
+		source = Nokogiri::HTML(open("http://www.nfl.com/schedules/#{year}/REG#{week}"))
 		games = source.css("a.gc-btn")
 		games.each do |game|
 			href = game["href"]
