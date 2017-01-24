@@ -35,6 +35,7 @@ class Participant < ApplicationRecord
   	awayhash = gameinfo[rawgame]["away"]
   	homescore = homehash["score"]
   	awayscore = awayhash["score"]
+    #binding.pry
   	hometotal = homescore["T"]
   	awaytotal = awayscore["T"]
   	hometeam = Participant.new(homeaway: "H", game: gameid)
@@ -53,11 +54,11 @@ class Participant < ApplicationRecord
   			awayteam[key] = value
   		end
   	end
-  	if awayscore === homescore
+  	if awaytotal === hometotal
   		hometeam.winlosstie = "T"
   		awayteam.winlosstie = "T"
   	else 
-  		if awayscore > homescore
+  		if awaytotal > hometotal
   			hometeam.winlosstie = "L"
   			awayteam.winlosstie = "W"
   		else
